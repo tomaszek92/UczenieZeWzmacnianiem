@@ -46,11 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\ExitFromWorld.cs" />
     <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\CellType.cs" />
     <Compile Include="ComboBoxItem.cs" />
     <Compile Include="Models\Direction.cs" />
-    <Compile Include="MainWindow.cs" />
+    <Compile Include="MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>

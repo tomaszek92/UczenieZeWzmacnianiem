@@ -29,29 +29,33 @@
         private void InitializeComponent()
         {
             this.groupBoxSettings = new System.Windows.Forms.GroupBox();
+            this.btnStart = new System.Windows.Forms.Button();
+            this.btnShowAgentsBehaviour = new System.Windows.Forms.Button();
+            this.cbNumberOfTests = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbMaxOfAgentsSteps = new System.Windows.Forms.ComboBox();
+            this.cbNumberOfExits = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.cbWorldSize = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cbCountOfExits = new System.Windows.Forms.ComboBox();
-            this.cbMaxOfAgentsSteps = new System.Windows.Forms.ComboBox();
-            this.cbCountOfTests = new System.Windows.Forms.ComboBox();
-            this.btnStart = new System.Windows.Forms.Button();
-            this.btnShowAgentsBehaviour = new System.Windows.Forms.Button();
             this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cbNumberOfWalls = new System.Windows.Forms.ComboBox();
             this.groupBoxSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxSettings
             // 
+            this.groupBoxSettings.Controls.Add(this.cbNumberOfWalls);
+            this.groupBoxSettings.Controls.Add(this.label5);
             this.groupBoxSettings.Controls.Add(this.btnStart);
             this.groupBoxSettings.Controls.Add(this.btnShowAgentsBehaviour);
-            this.groupBoxSettings.Controls.Add(this.cbCountOfTests);
+            this.groupBoxSettings.Controls.Add(this.cbNumberOfTests);
             this.groupBoxSettings.Controls.Add(this.label4);
             this.groupBoxSettings.Controls.Add(this.cbMaxOfAgentsSteps);
-            this.groupBoxSettings.Controls.Add(this.cbCountOfExits);
+            this.groupBoxSettings.Controls.Add(this.cbNumberOfExits);
             this.groupBoxSettings.Controls.Add(this.label3);
             this.groupBoxSettings.Controls.Add(this.cbWorldSize);
             this.groupBoxSettings.Controls.Add(this.label1);
@@ -62,6 +66,71 @@
             this.groupBoxSettings.TabIndex = 0;
             this.groupBoxSettings.TabStop = false;
             this.groupBoxSettings.Text = "Ustawienia";
+            // 
+            // btnStart
+            // 
+            this.btnStart.Location = new System.Drawing.Point(6, 479);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(173, 23);
+            this.btnStart.TabIndex = 1;
+            this.btnStart.Text = "Start";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // btnShowAgentsBehaviour
+            // 
+            this.btnShowAgentsBehaviour.Location = new System.Drawing.Point(6, 508);
+            this.btnShowAgentsBehaviour.Name = "btnShowAgentsBehaviour";
+            this.btnShowAgentsBehaviour.Size = new System.Drawing.Size(173, 23);
+            this.btnShowAgentsBehaviour.TabIndex = 2;
+            this.btnShowAgentsBehaviour.Text = "Pokaż zachowanie agenta";
+            this.btnShowAgentsBehaviour.UseVisualStyleBackColor = true;
+            this.btnShowAgentsBehaviour.Click += new System.EventHandler(this.btnShowAgentsBehaviour_Click);
+            // 
+            // cbNumberOfTests
+            // 
+            this.cbNumberOfTests.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbNumberOfTests.FormattingEnabled = true;
+            this.cbNumberOfTests.Location = new System.Drawing.Point(6, 162);
+            this.cbNumberOfTests.Name = "cbNumberOfTests";
+            this.cbNumberOfTests.Size = new System.Drawing.Size(173, 21);
+            this.cbNumberOfTests.TabIndex = 5;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 146);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Liczba prób:";
+            // 
+            // cbMaxOfAgentsSteps
+            // 
+            this.cbMaxOfAgentsSteps.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMaxOfAgentsSteps.FormattingEnabled = true;
+            this.cbMaxOfAgentsSteps.Location = new System.Drawing.Point(6, 122);
+            this.cbMaxOfAgentsSteps.Name = "cbMaxOfAgentsSteps";
+            this.cbMaxOfAgentsSteps.Size = new System.Drawing.Size(173, 21);
+            this.cbMaxOfAgentsSteps.TabIndex = 4;
+            // 
+            // cbNumberOfExits
+            // 
+            this.cbNumberOfExits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbNumberOfExits.FormattingEnabled = true;
+            this.cbNumberOfExits.Location = new System.Drawing.Point(6, 82);
+            this.cbNumberOfExits.Name = "cbNumberOfExits";
+            this.cbNumberOfExits.Size = new System.Drawing.Size(173, 21);
+            this.cbNumberOfExits.TabIndex = 3;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 106);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(173, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Maksymalna liczba kroków agenta:";
             // 
             // cbWorldSize
             // 
@@ -90,71 +159,6 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Liczba wyjść:";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 106);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(173, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Maksymalna liczba kroków agenta:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 146);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(65, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Liczba prób:";
-            // 
-            // cbCountOfExits
-            // 
-            this.cbCountOfExits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCountOfExits.FormattingEnabled = true;
-            this.cbCountOfExits.Location = new System.Drawing.Point(6, 82);
-            this.cbCountOfExits.Name = "cbCountOfExits";
-            this.cbCountOfExits.Size = new System.Drawing.Size(173, 21);
-            this.cbCountOfExits.TabIndex = 3;
-            // 
-            // cbMaxOfAgentsSteps
-            // 
-            this.cbMaxOfAgentsSteps.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbMaxOfAgentsSteps.FormattingEnabled = true;
-            this.cbMaxOfAgentsSteps.Location = new System.Drawing.Point(6, 122);
-            this.cbMaxOfAgentsSteps.Name = "cbMaxOfAgentsSteps";
-            this.cbMaxOfAgentsSteps.Size = new System.Drawing.Size(173, 21);
-            this.cbMaxOfAgentsSteps.TabIndex = 4;
-            // 
-            // cbCountOfTests
-            // 
-            this.cbCountOfTests.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCountOfTests.FormattingEnabled = true;
-            this.cbCountOfTests.Location = new System.Drawing.Point(6, 162);
-            this.cbCountOfTests.Name = "cbCountOfTests";
-            this.cbCountOfTests.Size = new System.Drawing.Size(173, 21);
-            this.cbCountOfTests.TabIndex = 5;
-            // 
-            // btnStart
-            // 
-            this.btnStart.Location = new System.Drawing.Point(6, 479);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(173, 23);
-            this.btnStart.TabIndex = 1;
-            this.btnStart.Text = "Start";
-            this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
-            // 
-            // btnShowAgentsBehaviour
-            // 
-            this.btnShowAgentsBehaviour.Location = new System.Drawing.Point(6, 508);
-            this.btnShowAgentsBehaviour.Name = "btnShowAgentsBehaviour";
-            this.btnShowAgentsBehaviour.Size = new System.Drawing.Size(173, 23);
-            this.btnShowAgentsBehaviour.TabIndex = 2;
-            this.btnShowAgentsBehaviour.Text = "Pokaż zachowanie agenta";
-            this.btnShowAgentsBehaviour.UseVisualStyleBackColor = true;
-            this.btnShowAgentsBehaviour.Click += new System.EventHandler(this.btnShowAgentsBehaviour_Click);
-            // 
             // pictureBox
             // 
             this.pictureBox.Location = new System.Drawing.Point(250, 38);
@@ -162,6 +166,24 @@
             this.pictureBox.Size = new System.Drawing.Size(500, 500);
             this.pictureBox.TabIndex = 1;
             this.pictureBox.TabStop = false;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 186);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(69, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Liczba ścian:";
+            // 
+            // cbNumberOfWalls
+            // 
+            this.cbNumberOfWalls.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbNumberOfWalls.FormattingEnabled = true;
+            this.cbNumberOfWalls.Location = new System.Drawing.Point(6, 202);
+            this.cbNumberOfWalls.Name = "cbNumberOfWalls";
+            this.cbNumberOfWalls.Size = new System.Drawing.Size(173, 21);
+            this.cbNumberOfWalls.TabIndex = 7;
             // 
             // MainWindow
             // 
@@ -189,12 +211,14 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox cbCountOfExits;
-        private System.Windows.Forms.ComboBox cbCountOfTests;
+        private System.Windows.Forms.ComboBox cbNumberOfExits;
+        private System.Windows.Forms.ComboBox cbNumberOfTests;
         private System.Windows.Forms.ComboBox cbMaxOfAgentsSteps;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnShowAgentsBehaviour;
         private System.Windows.Forms.PictureBox pictureBox;
+        private System.Windows.Forms.ComboBox cbNumberOfWalls;
+        private System.Windows.Forms.Label label5;
     }
 }
 
