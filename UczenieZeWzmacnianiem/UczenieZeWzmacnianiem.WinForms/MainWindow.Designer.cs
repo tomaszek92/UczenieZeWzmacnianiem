@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             this.groupBoxSettings = new System.Windows.Forms.GroupBox();
+            this.cbNumberOfWalls = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnShowAgentsBehaviour = new System.Windows.Forms.Button();
-            this.cbNumberOfTests = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cbMaxOfAgentsSteps = new System.Windows.Forms.ComboBox();
             this.cbNumberOfExits = new System.Windows.Forms.ComboBox();
@@ -40,19 +41,18 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cbNumberOfWalls = new System.Windows.Forms.ComboBox();
+            this.tbNumberOfTests = new System.Windows.Forms.TextBox();
             this.groupBoxSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxSettings
             // 
+            this.groupBoxSettings.Controls.Add(this.tbNumberOfTests);
             this.groupBoxSettings.Controls.Add(this.cbNumberOfWalls);
             this.groupBoxSettings.Controls.Add(this.label5);
             this.groupBoxSettings.Controls.Add(this.btnStart);
             this.groupBoxSettings.Controls.Add(this.btnShowAgentsBehaviour);
-            this.groupBoxSettings.Controls.Add(this.cbNumberOfTests);
             this.groupBoxSettings.Controls.Add(this.label4);
             this.groupBoxSettings.Controls.Add(this.cbMaxOfAgentsSteps);
             this.groupBoxSettings.Controls.Add(this.cbNumberOfExits);
@@ -66,6 +66,24 @@
             this.groupBoxSettings.TabIndex = 0;
             this.groupBoxSettings.TabStop = false;
             this.groupBoxSettings.Text = "Ustawienia";
+            // 
+            // cbNumberOfWalls
+            // 
+            this.cbNumberOfWalls.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbNumberOfWalls.FormattingEnabled = true;
+            this.cbNumberOfWalls.Location = new System.Drawing.Point(6, 202);
+            this.cbNumberOfWalls.Name = "cbNumberOfWalls";
+            this.cbNumberOfWalls.Size = new System.Drawing.Size(173, 21);
+            this.cbNumberOfWalls.TabIndex = 7;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 186);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(69, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Liczba ścian:";
             // 
             // btnStart
             // 
@@ -86,15 +104,6 @@
             this.btnShowAgentsBehaviour.Text = "Pokaż zachowanie agenta";
             this.btnShowAgentsBehaviour.UseVisualStyleBackColor = true;
             this.btnShowAgentsBehaviour.Click += new System.EventHandler(this.btnShowAgentsBehaviour_Click);
-            // 
-            // cbNumberOfTests
-            // 
-            this.cbNumberOfTests.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbNumberOfTests.FormattingEnabled = true;
-            this.cbNumberOfTests.Location = new System.Drawing.Point(6, 162);
-            this.cbNumberOfTests.Name = "cbNumberOfTests";
-            this.cbNumberOfTests.Size = new System.Drawing.Size(173, 21);
-            this.cbNumberOfTests.TabIndex = 5;
             // 
             // label4
             // 
@@ -167,23 +176,13 @@
             this.pictureBox.TabIndex = 1;
             this.pictureBox.TabStop = false;
             // 
-            // label5
+            // tbNumberOfTests
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 186);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(69, 13);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Liczba ścian:";
-            // 
-            // cbNumberOfWalls
-            // 
-            this.cbNumberOfWalls.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbNumberOfWalls.FormattingEnabled = true;
-            this.cbNumberOfWalls.Location = new System.Drawing.Point(6, 202);
-            this.cbNumberOfWalls.Name = "cbNumberOfWalls";
-            this.cbNumberOfWalls.Size = new System.Drawing.Size(173, 21);
-            this.cbNumberOfWalls.TabIndex = 7;
+            this.tbNumberOfTests.Location = new System.Drawing.Point(6, 163);
+            this.tbNumberOfTests.Name = "tbNumberOfTests";
+            this.tbNumberOfTests.Size = new System.Drawing.Size(173, 20);
+            this.tbNumberOfTests.TabIndex = 8;
+            this.tbNumberOfTests.Text = "10";
             // 
             // MainWindow
             // 
@@ -212,13 +211,13 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cbNumberOfExits;
-        private System.Windows.Forms.ComboBox cbNumberOfTests;
         private System.Windows.Forms.ComboBox cbMaxOfAgentsSteps;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnShowAgentsBehaviour;
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.ComboBox cbNumberOfWalls;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox tbNumberOfTests;
     }
 }
 

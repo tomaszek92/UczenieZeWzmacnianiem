@@ -10,13 +10,16 @@ namespace UczenieZeWzmacnianiem.WinForms
 {
     public partial class MainWindow : Form
     {
+        private World _world;
+        private Cell _startCell;
         private SimulatorSettings _simulatorSettings;
-        private Cell[,] _world;
-        private List<ExitFromWorld> _exits;
+        private readonly Random _rand = new Random();
 
         private readonly Pen _linePen = new Pen(Color.Black, 3);
         private readonly Pen _borderPen = new Pen(Color.Black, 10);
         private readonly Brush _wallBrush = Brushes.DarkRed;
+        private readonly Brush _startCellBrush = Brushes.Pink;
+        private readonly Brush _pathBrush = Brushes.Green;
         private readonly Font _font = new Font("Arial", 12, FontStyle.Bold);
 
         public MainWindow()
@@ -49,14 +52,7 @@ namespace UczenieZeWzmacnianiem.WinForms
                 new ComboBoxItem(9),
             });
 
-            InitializeComboBox(cbNumberOfWalls, Enumerable.Range(0, 15).Select(x => new ComboBoxItem(x)).ToList());
-
-            var countOfTestComboBoxItems = Enumerable
-                .Range(1, 10)
-                .Select(x => new ComboBoxItem(x))
-                .ToList();
-
-            InitializeComboBox(cbNumberOfTests, countOfTestComboBoxItems);
+            InitializeComboBox(cbNumberOfWalls, Enumerable.Range(0, 10).Select(x => new ComboBoxItem(x)).ToList());
         }
 
         private static void InitializeComboBox(ComboBox comboBox, List<ComboBoxItem> comboBoxItems)
@@ -70,43 +66,58 @@ namespace UczenieZeWzmacnianiem.WinForms
         {
             _simulatorSettings = new SimulatorSettings(
                 (int) cbWorldSize.SelectedValue, (int) cbNumberOfExits.SelectedValue,
-                (int) cbMaxOfAgentsSteps.SelectedValue, (int) cbNumberOfTests.SelectedValue,
+                (int) cbMaxOfAgentsSteps.SelectedValue, Int32.Parse(tbNumberOfTests.Text),
                 (int) cbNumberOfWalls.SelectedValue);
 
             CreateWorld();
-            DrawWorld();
-        }
 
+            List<Cell> cells = _world.Cells.Cast<Cell>().ToList();
+            var possibleStartCells = cells.Where(x => x.Type == CellType.Empty).ToList();
+            _startCell = possibleStartCells.ElementAt(_rand.Next(0, possibleStartCells.Count));
+
+            for (int i = 0; i < _simulatorSettings.NumberOfTests; i++)
+            {
+                Algorithm.ExecuteTest(_world, _simulatorSettings.MaxOfAgentSteps, _startCell, _rand);
+            }
+
+            DrawWorld(false);
+        }
 
         private void btnShowAgentsBehaviour_Click(object sender, EventArgs e)
         {
+            bool findPathToExit = _world.FindPathToExit(_startCell);
+            if (!findPathToExit)
+            {
+                MessageBox.Show(@"Nie znaleziono ścieżki");
+            }
+            else
+            {
+                DrawWorld(true);
+            }
         }
 
         private void CreateWorld()
         {
-            Random rand = new Random();
-            CreateExits(rand);
-            List<Point> walls = CreateWalls(rand);
-
-            _world = new Cell[_simulatorSettings.WorldSize, _simulatorSettings.WorldSize];
+            _world = new World(_simulatorSettings.WorldSize);
+            CreateExits();
+            List<Point> walls = CreateWalls();
 
             for (int x = 0; x < _simulatorSettings.WorldSize; x++)
             {
                 for (int y = 0; y < _simulatorSettings.WorldSize; y++)
                 {
-                    _world[x, y] = new Cell
+                    _world.Cells[x, y] = new Cell
                     {
                         Coordinates = new Point {X = x, Y = y},
                         Type = walls.Exists(c => c.X == x && c.Y == y)
                             ? CellType.Wall
-                            : CellType.Empty,
-                        Uasbility = Decimal.Zero
+                            : CellType.Empty
                     };
                 }
             }
         }
 
-        private List<Point> CreateWalls(Random rand)
+        private List<Point> CreateWalls()
         {
             List<Point> possibleWalls = new List<Point>();
             for (int x = 0; x < _simulatorSettings.WorldSize; x++)
@@ -133,7 +144,7 @@ namespace UczenieZeWzmacnianiem.WinForms
             List<Point> walls = new List<Point>();
             while (walls.Count != _simulatorSettings.NumberOfWalls)
             {
-                int index = rand.Next(0, possibleWalls.Count - 1);
+                int index = _rand.Next(0, possibleWalls.Count);
                 Point possibleWall = possibleWalls[index];
                 possibleWalls.RemoveAt(index);
                 if (!IsNeighbourOfWallOrExit(walls, possibleWall))
@@ -149,25 +160,25 @@ namespace UczenieZeWzmacnianiem.WinForms
         {
             if (walls.Any(wall =>
             {
-                var distance = Math.Sqrt(Math.Pow(wall.X - possibleWall.X, 2) + Math.Pow(wall.Y - possibleWall.Y, 2));
+                double distance = Math.Sqrt(Math.Pow(wall.X - possibleWall.X, 2) + Math.Pow(wall.Y - possibleWall.Y, 2));
                 return distance <= Math.Sqrt(2);
             }))
             {
                 return true;
             }
 
-            if (_exits.Any(exit => exit.Coordinates.X == possibleWall.X && exit.Coordinates.Y == possibleWall.Y))
+            if (_world.Exits.Any(exit => exit.Coordinates.X == possibleWall.X && exit.Coordinates.Y == possibleWall.Y))
             {
                 return true;
             }
-            if (_exits.Any(exit => exit.Coordinates.Y == possibleWall.Y && exit.Coordinates.X == possibleWall.X))
+            if (_world.Exits.Any(exit => exit.Coordinates.Y == possibleWall.Y && exit.Coordinates.X == possibleWall.X))
             {
                 return true;
             }
             return false;
         }
 
-        private void CreateExits(Random rand)
+        private void CreateExits()
         {
             List<ExitFromWorld> possibleExits = new List<ExitFromWorld>
             {
@@ -195,16 +206,16 @@ namespace UczenieZeWzmacnianiem.WinForms
                 possibleExits.Add(new ExitFromWorld(new Point {X = i, Y = 0}, _simulatorSettings.WorldSize));
             }
 
-            _exits = new List<ExitFromWorld>();
+            _world.Exits = new List<ExitFromWorld>();
             for (int i = 0; i < _simulatorSettings.NumberOfExits; i++)
             {
-                int next = rand.Next(0, possibleExits.Count);
-                _exits.Add(possibleExits[next]);
+                int next = _rand.Next(0, possibleExits.Count);
+                _world.Exits.Add(possibleExits[next]);
                 possibleExits.RemoveAt(next);
             }
         }
 
-        private void DrawWorld()
+        private void DrawWorld(bool drawPathToExit)
         {
             int cellSize = (int) (pictureBox.Size.Width - (_simulatorSettings.WorldSize - 1)*_linePen.Width -
                                   2*_borderPen.Width)/_simulatorSettings.WorldSize;
@@ -218,7 +229,7 @@ namespace UczenieZeWzmacnianiem.WinForms
             // rysowanie linii pionowych
             for (int y = 0; y < _simulatorSettings.WorldSize; y++)
             {
-                if (!_exits
+                if (!_world.Exits
                     .Any(exit =>
                         exit.Coordinates.X == 0 &&
                         exit.Coordinates.Y == y &&
@@ -238,7 +249,7 @@ namespace UczenieZeWzmacnianiem.WinForms
             }
             for (int y = 0; y < _simulatorSettings.WorldSize; y++)
             {
-                if (!_exits
+                if (!_world.Exits
                     .Any(exit =>
                         exit.Coordinates.X == _simulatorSettings.WorldSize - 1 &&
                         exit.Coordinates.Y == y &&
@@ -255,7 +266,7 @@ namespace UczenieZeWzmacnianiem.WinForms
             // rysowanie linii poziomych
             for (int x = 0; x < _simulatorSettings.WorldSize; x++)
             {
-                if (!_exits
+                if (!_world.Exits
                     .Any(exit =>
                         exit.Coordinates.X == x &&
                         exit.Coordinates.Y == 0 &&
@@ -275,7 +286,7 @@ namespace UczenieZeWzmacnianiem.WinForms
             }
             for (int x = 0; x < _simulatorSettings.WorldSize; x++)
             {
-                if (!_exits
+                if (!_world.Exits
                     .Any(exit =>
                         exit.Coordinates.X == x &&
                         exit.Coordinates.Y == _simulatorSettings.WorldSize - 1 &&
@@ -301,31 +312,50 @@ namespace UczenieZeWzmacnianiem.WinForms
             {
                 for (int y = 0; y < _simulatorSettings.WorldSize; y++)
                 {
-                    if (_world[x, y].Type == CellType.Wall)
+                    if (_world.Cells[x, y].Type == CellType.Wall)
                     {
-                        g.FillRectangle(_wallBrush,
-                            x: _borderPen.Width + x*(cellSize + _linePen.Width) + (x == 0 ? 0 : _linePen.Width/2),
-                            y: _borderPen.Width + y*(cellSize + _linePen.Width) + (y == 0 ? 0 : _linePen.Width/2),
-                            width: cellSize + (x == 0 || x == _simulatorSettings.WorldSize - 1 ? _linePen.Width/2 : 0),
-                            height: cellSize + (y == 0 || y == _simulatorSettings.WorldSize - 1 ? _linePen.Width/2 : 0));
+                        FillCell(g, _wallBrush, x, y, cellSize);
                     }
                 }
             }
+
+            if (drawPathToExit)
+            {
+                foreach (Cell cell in _world.PathToExit)
+                {
+                    FillCell(g, _pathBrush, cell.Coordinates.X, cell.Coordinates.Y, cellSize);
+                }
+            }
+
+            // rysowanie początkowej komórki
+            FillCell(g, _startCellBrush, _startCell.Coordinates.X, _startCell.Coordinates.Y, cellSize);
 
             // rysowanie wyników
             for (int x = 0; x < _simulatorSettings.WorldSize; x++)
             {
                 for (int y = 0; y < _simulatorSettings.WorldSize; y++)
                 {
-                    g.DrawString(_world[x, y].Uasbility.ToString(CultureInfo.CurrentCulture),
-                        _font, Brushes.DodgerBlue,
-                        x: _borderPen.Width + x*(cellSize + _linePen.Width),
-                        y: _borderPen.Width + y*(cellSize + _linePen.Width));
+                    if (_world.Cells[x, y].Type == CellType.Empty)
+                    {
+                        g.DrawString(_world.Cells[x, y].Uasbility.ToString("F", CultureInfo.CurrentCulture),
+                            _font, Brushes.DodgerBlue,
+                            x: _borderPen.Width + x*(cellSize + _linePen.Width),
+                            y: _borderPen.Width + y*(cellSize + _linePen.Width));
+                    }
                 }
             }
 
             pictureBox.Image = bitmap;
             g.Dispose();
+        }
+
+        private void FillCell(Graphics g, Brush brush, int x, int y, int cellSize)
+        {
+            g.FillRectangle(brush,
+                x: _borderPen.Width + x*(cellSize + _linePen.Width) + (x == 0 ? 0 : _linePen.Width/2),
+                y: _borderPen.Width + y*(cellSize + _linePen.Width) + (y == 0 ? 0 : _linePen.Width/2),
+                width: cellSize + (x == 0 || x == _simulatorSettings.WorldSize - 1 ? _linePen.Width/2 : 0),
+                height: cellSize + (y == 0 || y == _simulatorSettings.WorldSize - 1 ? _linePen.Width/2 : 0));
         }
     }
 }
