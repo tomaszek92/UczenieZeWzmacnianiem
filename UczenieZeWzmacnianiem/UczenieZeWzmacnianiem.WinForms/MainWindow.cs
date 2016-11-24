@@ -69,11 +69,11 @@ namespace UczenieZeWzmacnianiem.WinForms
                 (int) cbMaxOfAgentsSteps.SelectedValue, Int32.Parse(tbNumberOfTests.Text),
                 (int) cbNumberOfWalls.SelectedValue);
 
-            CreateWorld();
-
-            List<Cell> cells = _world.Cells.Cast<Cell>().ToList();
-            var possibleStartCells = cells.Where(x => x.Type == CellType.Empty).ToList();
-            _startCell = possibleStartCells.ElementAt(_rand.Next(0, possibleStartCells.Count));
+            if (!checkBoxSaveLastWorld.Checked)
+            {
+                CreateWorld();
+            }
+            checkBoxSaveLastWorld.Enabled = true;
 
             for (int i = 0; i < _simulatorSettings.NumberOfTests; i++)
             {
@@ -115,6 +115,10 @@ namespace UczenieZeWzmacnianiem.WinForms
                     };
                 }
             }
+
+            List<Cell> cells = _world.Cells.Cast<Cell>().ToList();
+            var possibleStartCells = cells.Where(x => x.Type == CellType.Empty).ToList();
+            _startCell = possibleStartCells.ElementAt(_rand.Next(0, possibleStartCells.Count));
         }
 
         private List<Point> CreateWalls()
@@ -321,9 +325,11 @@ namespace UczenieZeWzmacnianiem.WinForms
 
             if (drawPathToExit)
             {
-                foreach (Cell cell in _world.PathToExit)
+                for (int step = 0; step < _world.PathToExit.Count; step++)
                 {
+                    Cell cell = _world.PathToExit[step];
                     FillCell(g, _pathBrush, cell.Coordinates.X, cell.Coordinates.Y, cellSize);
+                    DrawStepString(g, cell.Coordinates.X, cell.Coordinates.Y, cellSize, step);
                 }
             }
 
@@ -335,7 +341,9 @@ namespace UczenieZeWzmacnianiem.WinForms
             {
                 for (int y = 0; y < _simulatorSettings.WorldSize; y++)
                 {
-                    if (_world.Cells[x, y].Type == CellType.Empty)
+                    if (_world.Cells[x, y].Type == CellType.Empty &&
+                        !(_startCell.Coordinates.X == x &&
+                          _startCell.Coordinates.Y == y))
                     {
                         g.DrawString(_world.Cells[x, y].Uasbility.ToString("F", CultureInfo.CurrentCulture),
                             _font, Brushes.DodgerBlue,
@@ -356,6 +364,13 @@ namespace UczenieZeWzmacnianiem.WinForms
                 y: _borderPen.Width + y*(cellSize + _linePen.Width) + (y == 0 ? 0 : _linePen.Width/2),
                 width: cellSize + (x == 0 || x == _simulatorSettings.WorldSize - 1 ? _linePen.Width/2 : 0),
                 height: cellSize + (y == 0 || y == _simulatorSettings.WorldSize - 1 ? _linePen.Width/2 : 0));
+        }
+
+        private void DrawStepString(Graphics g, int x, int y, int cellSize, int step)
+        {
+            g.DrawString((step + 1).ToString(), _font, Brushes.OrangeRed,
+                x: _borderPen.Width + x*(cellSize + _linePen.Width) + (x == 0 ? 0 : _linePen.Width/2) + cellSize/2,
+                y: _borderPen.Width + y*(cellSize + _linePen.Width) + (y == 0 ? 0 : _linePen.Width/2) + cellSize/2);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace UczenieZeWzmacnianiem.WinForms
             Cell actualCell = startCell;
             for (int i = 0; i < maxSteps; i++)
             {
+                cells.Remove(actualCell);
                 path.Add(actualCell);
 
                 if (world.Exits.Exists(exit =>
@@ -27,36 +28,19 @@ namespace UczenieZeWzmacnianiem.WinForms
                     break;
                 }
 
-                var possibleNextMoveCells = world.FindNeighbourCells(actualCell);
-
+                var possibleNextMoveCells = world.FindNeighbourCellsInGivenSet(cells, actualCell);
 
                 if (possibleNextMoveCells.Count == 0)
                 {
                     break;
                 }
                 actualCell = possibleNextMoveCells.ElementAt(rand.Next(0, possibleNextMoveCells.Count));
-                cells.Remove(actualCell);
             }
 
             decimal usability = reachedExit ? Decimal.One : Decimal.MinusOne;
             for (int i = 0; i < path.Count; i++)
             {
                 path[path.Count - 1 - i].Usabilities.Add(usability - i*stepPenalty);
-            }
-        }
-
-        private static void TryAddToPossibleNextMoveCells(IEnumerable<Cell> cells,
-            ICollection<Cell> possibleNextMoveCells, int x, int y, int worldSize)
-        {
-            if (x < 0 || x >= worldSize || y < 0 || y >= worldSize)
-            {
-                return;
-            }
-
-            Cell possibleNextMoveCell = cells.FirstOrDefault(cell => cell.Coordinates.X == x && cell.Coordinates.Y == y);
-            if (possibleNextMoveCell != null && possibleNextMoveCell.Type == CellType.Empty)
-            {
-                possibleNextMoveCells.Add(possibleNextMoveCell);
             }
         }
     }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBoxSettings = new System.Windows.Forms.GroupBox();
+            this.tbNumberOfTests = new System.Windows.Forms.TextBox();
             this.cbNumberOfWalls = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
@@ -41,13 +42,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.tbNumberOfTests = new System.Windows.Forms.TextBox();
+            this.checkBoxSaveLastWorld = new System.Windows.Forms.CheckBox();
             this.groupBoxSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxSettings
             // 
+            this.groupBoxSettings.Controls.Add(this.checkBoxSaveLastWorld);
             this.groupBoxSettings.Controls.Add(this.tbNumberOfTests);
             this.groupBoxSettings.Controls.Add(this.cbNumberOfWalls);
             this.groupBoxSettings.Controls.Add(this.label5);
@@ -66,6 +68,14 @@
             this.groupBoxSettings.TabIndex = 0;
             this.groupBoxSettings.TabStop = false;
             this.groupBoxSettings.Text = "Ustawienia";
+            // 
+            // tbNumberOfTests
+            // 
+            this.tbNumberOfTests.Location = new System.Drawing.Point(6, 163);
+            this.tbNumberOfTests.Name = "tbNumberOfTests";
+            this.tbNumberOfTests.Size = new System.Drawing.Size(173, 20);
+            this.tbNumberOfTests.TabIndex = 8;
+            this.tbNumberOfTests.Text = "10";
             // 
             // cbNumberOfWalls
             // 
@@ -176,13 +186,16 @@
             this.pictureBox.TabIndex = 1;
             this.pictureBox.TabStop = false;
             // 
-            // tbNumberOfTests
+            // checkBoxSaveLastWorld
             // 
-            this.tbNumberOfTests.Location = new System.Drawing.Point(6, 163);
-            this.tbNumberOfTests.Name = "tbNumberOfTests";
-            this.tbNumberOfTests.Size = new System.Drawing.Size(173, 20);
-            this.tbNumberOfTests.TabIndex = 8;
-            this.tbNumberOfTests.Text = "10";
+            this.checkBoxSaveLastWorld.AutoSize = true;
+            this.checkBoxSaveLastWorld.Enabled = false;
+            this.checkBoxSaveLastWorld.Location = new System.Drawing.Point(6, 230);
+            this.checkBoxSaveLastWorld.Name = "checkBoxSaveLastWorld";
+            this.checkBoxSaveLastWorld.Size = new System.Drawing.Size(154, 17);
+            this.checkBoxSaveLastWorld.TabIndex = 9;
+            this.checkBoxSaveLastWorld.Text = "Zapamiętaj poprzedni świat";
+            this.checkBoxSaveLastWorld.UseVisualStyleBackColor = true;
             // 
             // MainWindow
             // 
@@ -218,6 +231,7 @@
         private System.Windows.Forms.ComboBox cbNumberOfWalls;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tbNumberOfTests;
+        private System.Windows.Forms.CheckBox checkBoxSaveLastWorld;
     }
 }
 

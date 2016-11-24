@@ -18,29 +18,32 @@ namespace UczenieZeWzmacnianiem.WinForms.Models
 
         public bool FindPathToExit(Cell startCell)
         {
+            Cell actuaCell = startCell;
             PathToExit = new List<Cell>();
             List<Cell> cells = Cells.Cast<Cell>().ToList();
             while (true)
             {
-                Cell next = FindNeighbourCellsInGivenSet(cells, startCell)
+                actuaCell = FindNeighbourCellsInGivenSet(cells, actuaCell)
+                    .Where(cell =>
+                        !(cell.Coordinates.X == startCell.Coordinates.X &&
+                          cell.Coordinates.Y == startCell.Coordinates.Y))
                     .OrderByDescending(cell => cell.Uasbility)
                     .FirstOrDefault();
-                if (next == null)
+                if (actuaCell == null)
                 {
                     return false;
                 }
-                cells.Remove(next);
-                PathToExit.Add(next);
+                cells.Remove(actuaCell);
+                PathToExit.Add(actuaCell);
                 if (Exits.Exists(exit =>
-                        exit.Coordinates.X == next.Coordinates.X && exit.Coordinates.Y == next.Coordinates.Y))
+                        exit.Coordinates.X == actuaCell.Coordinates.X && exit.Coordinates.Y == actuaCell.Coordinates.Y))
                 {
                     return true;
                 }
-                startCell = next;
             }
         }
 
-        private List<Cell> FindNeighbourCellsInGivenSet(List<Cell> cells2, Cell cell)
+        public List<Cell> FindNeighbourCellsInGivenSet(List<Cell> cells2, Cell cell)
         {
             List<Cell> result = new List<Cell>();
 
@@ -61,11 +64,6 @@ namespace UczenieZeWzmacnianiem.WinForms.Models
             TryAddToPossibleNextMoveCells(cells, result, x, y - 1, Cells.GetLength(0));
 
             return result;
-        }
-
-        public List<Cell> FindNeighbourCells(Cell cell)
-        {
-            return FindNeighbourCellsInGivenSet(Cells.Cast<Cell>().ToList(), cell);
         }
 
         private static void TryAddToPossibleNextMoveCells(IEnumerable<Cell> cells,
