@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using UczenieZeWzmacnianiem.WinForms.Models;
 
@@ -27,6 +29,8 @@ namespace UczenieZeWzmacnianiem.WinForms
             InitializeComponent();
 
             InitializeComboBoxes();
+
+            //RunTests();
         }
 
         private void InitializeComboBoxes()
@@ -62,6 +66,44 @@ namespace UczenieZeWzmacnianiem.WinForms
             comboBox.ValueMember = "Value";
         }
 
+        private void RunTests()
+        {
+            List<int> numbersOfTests = new List<int> {10, 100, 1000, 10000};
+            Dictionary<int, int> testResults = numbersOfTests.ToDictionary(x => x, x => 0);
+            _simulatorSettings = new SimulatorSettings(10, 1, 5, 0, 3);
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            for (int testIndex = 0; testIndex < 100; testIndex++)
+            {
+                CreateWorld();
+                var exitCoord = _world.Exits.First().Coordinates;
+                foreach (int numberOfTests in numbersOfTests)
+                {
+                    _world.ClearCellUsabilities();
+                    //Parallel.For(0, numberOfTests,
+                    //    index =>
+                    //    {
+                    //        Algorithm.ExecuteTest(_world, _simulatorSettings.MaxOfAgentSteps, _startCell, _rand);
+                    //    });
+                    for (int j = 0; j < numberOfTests; j++)
+                    {
+                        Algorithm.ExecuteTest(_world, _simulatorSettings.MaxOfAgentSteps, _startCell, _rand);
+                    }
+                    bool findPathToExit = _world.FindPathToExit(_startCell);
+                    if (findPathToExit)
+                    {
+                        int distance = Math.Abs(_startCell.Coordinates.X - exitCoord.X) +
+                                       Math.Abs(_startCell.Coordinates.Y - exitCoord.Y);
+                        if (_world.PathToExit.Count == distance)
+                        {
+                            testResults[numberOfTests]++;
+                        }
+                    }
+                }
+            }
+            stopwatch.Stop();
+            MessageBox.Show(stopwatch.Elapsed.TotalSeconds.ToString(CultureInfo.InvariantCulture));
+        }
+
         private void btnStart_Click(object sender, EventArgs e)
         {
             _simulatorSettings = new SimulatorSettings(
@@ -74,10 +116,15 @@ namespace UczenieZeWzmacnianiem.WinForms
                 CreateWorld();
             }
             checkBoxSaveLastWorld.Enabled = true;
+            btnShowAgentsBehaviour.Enabled = true;
+            _world.ClearCellUsabilities();
 
+            progressBarSimulator.Maximum = _simulatorSettings.NumberOfTests;
+            progressBarSimulator.Value = 0;
             for (int i = 0; i < _simulatorSettings.NumberOfTests; i++)
             {
                 Algorithm.ExecuteTest(_world, _simulatorSettings.MaxOfAgentSteps, _startCell, _rand);
+                progressBarSimulator.Value = i + 1;
             }
 
             DrawWorld(false);

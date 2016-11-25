@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBoxSettings = new System.Windows.Forms.GroupBox();
+            this.checkBoxSaveLastWorld = new System.Windows.Forms.CheckBox();
             this.tbNumberOfTests = new System.Windows.Forms.TextBox();
             this.cbNumberOfWalls = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -42,13 +43,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.checkBoxSaveLastWorld = new System.Windows.Forms.CheckBox();
+            this.progressBarSimulator = new System.Windows.Forms.ProgressBar();
             this.groupBoxSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxSettings
             // 
+            this.groupBoxSettings.Controls.Add(this.progressBarSimulator);
             this.groupBoxSettings.Controls.Add(this.checkBoxSaveLastWorld);
             this.groupBoxSettings.Controls.Add(this.tbNumberOfTests);
             this.groupBoxSettings.Controls.Add(this.cbNumberOfWalls);
@@ -68,6 +70,17 @@
             this.groupBoxSettings.TabIndex = 0;
             this.groupBoxSettings.TabStop = false;
             this.groupBoxSettings.Text = "Ustawienia";
+            // 
+            // checkBoxSaveLastWorld
+            // 
+            this.checkBoxSaveLastWorld.AutoSize = true;
+            this.checkBoxSaveLastWorld.Enabled = false;
+            this.checkBoxSaveLastWorld.Location = new System.Drawing.Point(6, 230);
+            this.checkBoxSaveLastWorld.Name = "checkBoxSaveLastWorld";
+            this.checkBoxSaveLastWorld.Size = new System.Drawing.Size(154, 17);
+            this.checkBoxSaveLastWorld.TabIndex = 9;
+            this.checkBoxSaveLastWorld.Text = "Zapamiętaj poprzedni świat";
+            this.checkBoxSaveLastWorld.UseVisualStyleBackColor = true;
             // 
             // tbNumberOfTests
             // 
@@ -97,7 +110,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(6, 479);
+            this.btnStart.Location = new System.Drawing.Point(6, 450);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(173, 23);
             this.btnStart.TabIndex = 1;
@@ -107,6 +120,7 @@
             // 
             // btnShowAgentsBehaviour
             // 
+            this.btnShowAgentsBehaviour.Enabled = false;
             this.btnShowAgentsBehaviour.Location = new System.Drawing.Point(6, 508);
             this.btnShowAgentsBehaviour.Name = "btnShowAgentsBehaviour";
             this.btnShowAgentsBehaviour.Size = new System.Drawing.Size(173, 23);
@@ -186,16 +200,12 @@
             this.pictureBox.TabIndex = 1;
             this.pictureBox.TabStop = false;
             // 
-            // checkBoxSaveLastWorld
+            // progressBarSimulator
             // 
-            this.checkBoxSaveLastWorld.AutoSize = true;
-            this.checkBoxSaveLastWorld.Enabled = false;
-            this.checkBoxSaveLastWorld.Location = new System.Drawing.Point(6, 230);
-            this.checkBoxSaveLastWorld.Name = "checkBoxSaveLastWorld";
-            this.checkBoxSaveLastWorld.Size = new System.Drawing.Size(154, 17);
-            this.checkBoxSaveLastWorld.TabIndex = 9;
-            this.checkBoxSaveLastWorld.Text = "Zapamiętaj poprzedni świat";
-            this.checkBoxSaveLastWorld.UseVisualStyleBackColor = true;
+            this.progressBarSimulator.Location = new System.Drawing.Point(6, 479);
+            this.progressBarSimulator.Name = "progressBarSimulator";
+            this.progressBarSimulator.Size = new System.Drawing.Size(173, 23);
+            this.progressBarSimulator.TabIndex = 2;
             // 
             // MainWindow
             // 
@@ -232,6 +242,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tbNumberOfTests;
         private System.Windows.Forms.CheckBox checkBoxSaveLastWorld;
+        private System.Windows.Forms.ProgressBar progressBarSimulator;
     }
 }
 

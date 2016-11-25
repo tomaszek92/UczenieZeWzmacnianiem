@@ -80,5 +80,10 @@ namespace UczenieZeWzmacnianiem.WinForms.Models
                 possibleNextMoveCells.Add(possibleNextMoveCell);
             }
         }
+
+        public void ClearCellUsabilities()
+        {
+            Cells.Cast<Cell>().ToList().ForEach(cell => cell.Usabilities.Clear());
+        }
     }
 }
