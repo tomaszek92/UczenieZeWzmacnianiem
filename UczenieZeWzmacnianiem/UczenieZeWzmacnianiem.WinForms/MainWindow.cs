@@ -27,9 +27,7 @@ namespace UczenieZeWzmacnianiem.WinForms
         public MainWindow()
         {
             InitializeComponent();
-
             InitializeComboBoxes();
-
             //RunTests();
         }
 
@@ -66,11 +64,23 @@ namespace UczenieZeWzmacnianiem.WinForms
             comboBox.ValueMember = "Value";
         }
 
+        private class TestResult
+        {
+            public int Found { get; set; }
+            public int Optimal { get; set; }
+
+            public TestResult()
+            {
+                Found = 0;
+                Optimal = 0;
+            }
+        }
+
         private void RunTests()
         {
             List<int> numbersOfTests = new List<int> {10, 100, 1000, 10000};
-            Dictionary<int, int> testResults = numbersOfTests.ToDictionary(x => x, x => 0);
-            _simulatorSettings = new SimulatorSettings(10, 1, 5, 0, 3);
+            Dictionary<int, TestResult> testResults = numbersOfTests.ToDictionary(x => x, x => new TestResult());
+            _simulatorSettings = new SimulatorSettings(12, 1, 5, 0, 3);
             Stopwatch stopwatch = Stopwatch.StartNew();
             for (int testIndex = 0; testIndex < 100; testIndex++)
             {
@@ -79,11 +89,6 @@ namespace UczenieZeWzmacnianiem.WinForms
                 foreach (int numberOfTests in numbersOfTests)
                 {
                     _world.ClearCellUsabilities();
-                    //Parallel.For(0, numberOfTests,
-                    //    index =>
-                    //    {
-                    //        Algorithm.ExecuteTest(_world, _simulatorSettings.MaxOfAgentSteps, _startCell, _rand);
-                    //    });
                     for (int j = 0; j < numberOfTests; j++)
                     {
                         Algorithm.ExecuteTest(_world, _simulatorSettings.MaxOfAgentSteps, _startCell, _rand);
@@ -91,11 +96,12 @@ namespace UczenieZeWzmacnianiem.WinForms
                     bool findPathToExit = _world.FindPathToExit(_startCell);
                     if (findPathToExit)
                     {
+                        testResults[numberOfTests].Found++;
                         int distance = Math.Abs(_startCell.Coordinates.X - exitCoord.X) +
                                        Math.Abs(_startCell.Coordinates.Y - exitCoord.Y);
                         if (_world.PathToExit.Count == distance)
                         {
-                            testResults[numberOfTests]++;
+                            testResults[numberOfTests].Optimal++;
                         }
                     }
                 }
